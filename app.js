@@ -13,9 +13,11 @@ client.connect(function(err) {
 
     const db = client.db(dbName);
 
-    insertDocuments(db, function() {
+    //insertDocuments(db, function() {
+    findDocuments(db, function() {
         client.close();
-    })
+    });
+    //});
 });
 
 const insertDocuments = function(db, callback) {
@@ -43,5 +45,16 @@ const insertDocuments = function(db, callback) {
         assert.equal(3, result.ops.length);
         console.log("Inserted 3 documents into the collection");
         callback(result);
+    });
+}
+
+const findDocuments = function(db, callback) {
+    const collection = db.collection("fruits");
+
+    collection.find({}).toArray(function(err, fruits) {
+        assert.equal(err, null);
+        console.log("Found the following records");
+        console.log(fruits)
+        callback(fruits);
     });
 }
